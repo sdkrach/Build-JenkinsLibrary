@@ -13,8 +13,8 @@ def call(body) {
             hddLimit = '20G'
         }
         
-        skipDeploy ("$BRANCH_NAME" != 'master')
-        skipNotification ("$BRANCH_NAME" != 'master')
+        skipDeploy ("${this.BRANCH_NAME}" != 'master')
+        skipNotification ("${this.BRANCH_NAME}" != 'master')
         
         deployUpdatesiteSshName 'web'
         deployUpdatesiteRootDir '/home/deploy/html'
