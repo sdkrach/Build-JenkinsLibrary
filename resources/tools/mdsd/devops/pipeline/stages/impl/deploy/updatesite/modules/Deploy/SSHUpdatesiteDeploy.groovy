@@ -3,13 +3,13 @@ sshPublisher(
     failOnError: true,
     publishers: [
         sshPublisherDesc(
-            configName: CFG.deploySSHName,
+            configName: CFG.deployUpdatesiteSshName,
             transfers: [
                 sshTransfer(
                     sourceFiles: "${CFG.relativeArtifactsDir}/**/*",
                     cleanRemote: true,
                     removePrefix: "${CFG.relativeArtifactsDir}",
-                    remoteDirectory: "${CFG.deployProjectDir}/${CFG.deploySubDir}"
+                    remoteDirectory: "${CFG.deployUpdatesiteProjectDir}/${CFG.deployUpdatesiteSubDir}"
                 )
             ]
         )

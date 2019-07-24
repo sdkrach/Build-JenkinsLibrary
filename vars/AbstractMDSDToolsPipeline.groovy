@@ -4,12 +4,7 @@
  * Relies on concrete Pipeline to provide agent configuration
  */
 def call(body, defaults  = [:], overrides = [:]) {
-  extendConfiguration([
-    skipDeploy: "$BRANCH_NAME" != 'master',
-    skipNotification: "$BRANCH_NAME" != 'master',
-    deploySubDir: "$BRANCH_NAME" == 'master' ? 'nightly': "branches/$BRANCH_NAME",
-    deployProjectDir: scm.userRemoteConfigs[0].url.replaceFirst(/^.*\/([^\/]+?).git$/, '$1').toLowerCase()
-  ] + defaults, [    
+  extendConfiguration(defaults, [    
     deployRelease: params.Release,
     deployReleaseVersion: params.ReleaseVersion
   ] + overrides, body) 
@@ -29,7 +24,7 @@ def call(body, defaults  = [:], overrides = [:]) {
   
   extendConfiguration([
     modules: moduleConfig,
-    notificationDefaultRecipient: decodeEmailAddress(config.notificationDefaultRecipient)
+    notificationDefaultRecipient: decodeEmailAddress(config.notifyDefault)
   ])
 
   config = updateConfiguration()
@@ -55,9 +50,7 @@ def call(body, defaults  = [:], overrides = [:]) {
           extendConfiguration([
             workspacePath: pwd(),
             isMasterBranch: "$BRANCH_NAME" == 'master',
-            isPullRequest: !(env.CHANGE_TARGET == null),
-            relativeArtifactsDir: config.relativeArtifactsDir ? config.relativeArtifactsDir : config.updateSiteLocation ?
-              config.updateSiteLocation : error('No artifacts directory specified')
+            isPullRequest: !(env.CHANGE_TARGET == null)
           ])
           MPLModule()
         }
@@ -95,7 +88,7 @@ def call(body, defaults  = [:], overrides = [:]) {
     }
     post {
       always {
-        emailNotification(config.notificationDefaultRecipient, config.skipNotification)
+        emailNotification(config.notifyDefault, config.skipNotification)
       }
       cleanup {
         script {

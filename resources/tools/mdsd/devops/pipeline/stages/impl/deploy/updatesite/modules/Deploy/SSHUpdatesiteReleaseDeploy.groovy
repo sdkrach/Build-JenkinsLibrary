@@ -13,7 +13,7 @@ configFileProvider(
                     transfers: [
                         sshTransfer(
                             sourceFiles: "$SCRIPTNAME",
-                            remoteDirectory: "${CFG.deployProjectDir}"
+                            remoteDirectory: "${CFG.deployUpdatesiteProjectDir}"
                         )
                     ]
                 ),
@@ -22,9 +22,9 @@ configFileProvider(
                     transfers: [
                         sshTransfer(
                             execCommand:
-                                "cd ${CFG.deployRootDir}/${CFG.deployProjectDir} && " +
+                                "cd ${CFG.deployUpdatesiteRootDir}/${CFG.deployUpdatesiteProjectDir} && " +
                                 "mkdir -p releases/${CFG.deployReleaseVersion} && " +
-                                "cp -a ${CFG.deploySubDir}/* releases/${CFG.deployReleaseVersion}/ && " +
+                                "cp -a ${CFG.deployUpdatesiteSubDir}/* releases/${CFG.deployReleaseVersion}/ && " +
                                 "chmod +x $SCRIPTNAME && " +
                                 "./$SCRIPTNAME releases && " +
                                 "rm $SCRIPTNAME"

@@ -1,5 +1,5 @@
 extendConfiguration([
-    dockerBuildImage: "maven:${CFG.mavenContainerVersion}",
+    dockerBuildImage: "maven:${CFG.mavenVersion}-jdk-${CFG.mavenJdkVersion}",
     dockerWithRunParameters: """\
     ${CFG.dockerWithRunParameters ?: ""} \
     -v ${CFG.slaveHome}/.m2:/.m2:ro \
